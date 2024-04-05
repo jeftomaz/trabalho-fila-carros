@@ -25,6 +25,8 @@ bool taCheio(Queue* carros) {
     return carros->quantidade >= carros->limite;
 }
 */
+
+// função que adiciona carros
 void enqueue(Queue* carros, string nome, string marca, string modelo) {
     
     // verifica se a fila é maior ou igual ao limite de carros
