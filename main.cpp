@@ -20,11 +20,6 @@ void init(Queue *carros) {
     carros->last = nullptr; //define a fila vazia na inicialização
     carros->quantidade = 0; //define que não há carros armazenados ainda
 }
-/*
-bool taCheio(Queue* carros) {
-    return carros->quantidade >= carros->limite;
-}
-*/
 
 // função que adiciona carros
 void enqueue(Queue *carros, string nome, string marca, string modelo) {
@@ -46,6 +41,8 @@ void enqueue(Queue *carros, string nome, string marca, string modelo) {
             carros->last->next = novoNode;
             carros->last = novoNode;
         }
+
+        cout << "\nCarro Adicionado!\n";
         carros->quantidade++;
     }
 
@@ -56,7 +53,7 @@ void enqueue(Queue *carros, string nome, string marca, string modelo) {
 // verifica se o primeiro carro (first) é nulo (não exite).
 void dequeue(Queue *carro) {
     if(carro->first==nullptr) {
-        cout << "Fila vazia";
+        cout << "Fila vazia!";
 
         return;
     } else {
@@ -73,7 +70,7 @@ void dequeue(Queue *carro) {
         carro->first = carro->first->next;
 
         // indica ao usuário o carro sendo removido
-        cout << "Removendo o carro: " << temp->nome << "\n";
+        cout << "Veículo Removido: " << temp->nome << "\n";
 
         delete temp;
         carro->quantidade--;
@@ -81,21 +78,80 @@ void dequeue(Queue *carro) {
     }
 }
 
-int main()
-{
-    Queue carros; // inicializa a fila
+// lista todos os carros
+void list(Queue *carro) {
+    Node *atual = carro->first; // ponteiro temporário para percorrer a lista
+
+    int count = 1;
+
+    while(atual != nullptr) {
+        cout << "Carro " << count << ":\n";
+        cout << "Condutor: " << atual->nome << "\n";
+        cout << "Marca: " << atual->marca << "\n";
+        cout << "Modelo: " << atual->modelo << "\n\n";
+
+        atual = atual->next; // aponta para o próximo da lista
+        count++;
+    }
+}
+
+void menu(){
+
+    // inicializa a fila
+    Queue carros;
     init(&carros);
 
-    // Adicionando carros
-    enqueue(&carros,"Roberto", "Vw", "Gol");
-    enqueue(&carros,"Fagner", "Fiat", "Uno");
-    enqueue(&carros,"Davidson", "Renault", "Kwid");
 
-    // Removendo carros
-    dequeue(&carros);
-    dequeue(&carros);
-    dequeue(&carros);
-    dequeue(&carros); // Tenta remover quando a fila está fazia
+    int opt;
+    string nome, marca, modelo;
 
-    return 0;
+    do {
+
+        cout << "\nEscolha uma opção\n\n";
+        cout << "1 - Adicionar novo carro\n";
+        cout << "2 - Remover carro\n";
+        cout << "3 - Listar todos os carro\n";
+        cout << "4 - Sair\n";
+        cout << "Opção: ";
+        cin >> opt;
+
+        switch (opt) {
+        case 1:
+            cout << "Adicionando Novo Carro\n";
+
+            cout <<"Qual o nome do condutor? Nome: ";
+            cin >> nome;
+
+            cout << "Qual a marca do veículo? Marca: ";
+            cin >> marca;
+
+            cout <<"Qual o modelo do veiculo? Modelo: ";
+            cin >> modelo;
+
+            enqueue(&carros, nome, marca, modelo);
+
+            break;
+        
+        case 2:
+            cout << "Removendo Veículo\n";
+            dequeue(&carros);
+            break;
+
+        case 3:
+            cout << "\nLista de Carros\n\n";
+            list(&carros);
+            break;
+
+        case 4:
+            cout << "Finalizando o sistema... \n";
+
+        default:
+            cout << "Opção Inválida!\n";
+        }
+    } while (opt != 4);
+}
+
+int main()
+{
+    menu();
 }
